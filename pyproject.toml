@@ -1,0 +1,48 @@
+[project]
+name = "adguard-analytics"
+version = "0.1.0"
+description = "Analytics for Adguard home logs"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "pandas>=2.2.2",
+    "plotly>=5.24.1",
+    "pydantic-settings>=2.5.2",
+    "requests>=2.32.3",
+    "sentry-sdk>=2.14.0",
+    "streamlit>=1.38.0",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.18.2",
+    "pytest>=8.3.0",
+    "pytest-cov>=6.0.0",
+    "pytest-mock>=3.14.0",
+    "types-requests>=2.32.4.20250913",
+    "pandas-stubs>=2.3.2.250926",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--tb=short",
+]
+
+[tool.coverage.run]
+source = ["lib"]
+omit = ["tests/*", ".venv/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
