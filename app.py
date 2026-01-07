@@ -249,21 +249,28 @@ tab1, tab2, tab3, tab4 = st.tabs(
 with tab1:
     st.subheader("Queries Over Time")
 
-    # Resample by hour
+    # Resample by hour, grouped by client
     if len(df) > 0:
-        timeline_df = df.set_index("T").resample("h").size().reset_index()
-        timeline_df.columns = ["Time", "Queries"]
+        # Group by hour and client
+        timeline_df = (
+            df.groupby([pd.Grouper(key="T", freq="h"), "hostname"])
+            .size()
+            .reset_index(name="Queries")
+        )
+        timeline_df.columns = ["Time", "Client", "Queries"]
 
         fig = px.line(
             timeline_df,
             x="Time",
             y="Queries",
-            title="DNS Queries per Hour",
+            color="Client",
+            title="DNS Queries per Hour by Client",
         )
         fig.update_layout(
             xaxis_title="Time",
             yaxis_title="Number of Queries",
             hovermode="x unified",
+            legend_title_text="Client",
         )
         st.plotly_chart(fig, width="stretch")
 
