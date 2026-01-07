@@ -3,7 +3,7 @@ name: Delete old container images
 on:
   workflow_dispatch: # Allow manual runs
   schedule:
-    - cron: "0 0 * * *" # Run daily at midnight
+    - cron: '0 0 * * *' # Run daily at midnight
 
 jobs:
   delete-old-images:
@@ -17,6 +17,6 @@ jobs:
       - name: Delete old versions of nextcloud bot
         uses: actions/delete-package-versions@v5
         with:
-          package-name: "adguard-analytics"
-          package-type: "container"
+          package-name: 'adguard-analytics'
+          package-type: 'container'
           min-versions-to-keep: 10
