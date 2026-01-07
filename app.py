@@ -16,7 +16,7 @@ st.set_page_config(
 st.title("🛡️ AdGuard DNS Analytics")
 
 
-@st.cache_data
+@st.cache_data(ttl="5m")
 def load_querylog() -> pd.DataFrame:
     """Load query log from JSON file (newline-delimited JSON)."""
     querylog_path = Path("data/querylog.json")
@@ -32,7 +32,7 @@ def load_querylog() -> pd.DataFrame:
     return df
 
 
-@st.cache_data
+@st.cache_data(ttl="1h")
 def load_leases() -> dict[str, str]:
     """Load leases and return IP to hostname mapping."""
     leases_path = Path("data/leases.json")
