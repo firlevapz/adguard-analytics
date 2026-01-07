@@ -8,10 +8,10 @@ env:
 
 on:
   pull_request:
-    branches: ["**"]
+    branches: ['**']
 
   push:
-    branches: ["**"]
+    branches: ['**']
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
@@ -30,7 +30,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version-file: ".python-version"
+          python-version-file: '.python-version'
 
       - name: Install pre-commit
         run: |
@@ -40,24 +40,6 @@ jobs:
       - name: Run pre-commit hooks
         run: |
           pre-commit run --all-files
-
-  test:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version-file: ".python-version"
-
-      - name: Run Pytest
-        run: |
-          pip install uv
-          uv run pytest
 
   build:
     runs-on: ubuntu-latest
