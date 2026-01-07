@@ -1,4 +1,5 @@
 import json
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -129,8 +130,28 @@ df["is_cached"] = df.get("Cached", False)
 # Sidebar filters
 st.sidebar.header("🔍 Filters")
 
-# Date range filter
-if len(df) > 0:
+# Quick time range selector
+st.sidebar.subheader("⏱️ Time Range")
+time_range = st.sidebar.radio(
+    "Quick Select",
+    options=["Last 24 Hours", "Last Week", "Last Month", "Custom"],
+    index=0,  # Default to "Last 24 Hours"
+    horizontal=True,
+)
+
+# Calculate time ranges using timezone-aware datetime (UTC)
+now = datetime.now(timezone.utc)
+if time_range == "Last 24 Hours":
+    start_time = now - timedelta(hours=24)
+    df = df[df["T"] >= start_time]
+elif time_range == "Last Week":
+    start_time = now - timedelta(days=7)
+    df = df[df["T"] >= start_time]
+elif time_range == "Last Month":
+    start_time = now - timedelta(days=30)
+    df = df[df["T"] >= start_time]
+elif time_range == "Custom" and len(df) > 0:
+    # Custom date range filter
     min_date = df["T"].min().date()
     max_date = df["T"].max().date()
     date_range = st.sidebar.date_input(
